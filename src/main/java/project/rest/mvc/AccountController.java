@@ -5,9 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import project.core.models.entities.Account;
 import project.core.services.AccountService;
 import project.core.services.utils.AccountList;
@@ -15,6 +13,9 @@ import project.rest.resources.AccountListResource;
 import project.rest.resources.AccountResource;
 import project.rest.resources.asm.AccountListResourceAsm;
 import project.rest.resources.asm.AccountResourceAsm;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by swen on 5/2/16.
@@ -31,8 +32,18 @@ public class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<AccountListResource> findAllAccounts(){
-        AccountList accountList = accountService.findAllAccounts();
+    public ResponseEntity<AccountListResource> findAllAccounts(@RequestParam(value = "name", required = false)String name){
+        AccountList accountList = null;
+        if(name == null){
+            accountList = accountService.findAllAccounts();
+        }else {
+            Account account = accountService.findByAccountName(name);
+            if(account == null){
+                accountList = new AccountList(new ArrayList<>());
+            }else {
+                accountList = new AccountList(Arrays.asList(account));
+            }
+        };
         return new ResponseEntity<AccountListResource>(new AccountListResourceAsm().toResource(accountList), HttpStatus.OK);
     }
 
@@ -44,6 +55,22 @@ public class AccountController {
 //        httpHeaders.setLocation(accountResource.getLink());
         return new ResponseEntity<AccountResource>(accountResource,httpHeaders,HttpStatus.CREATED);
     }
+
+    @RequestMapping( value="/{accountId}",
+            method = RequestMethod.GET)
+    public ResponseEntity<AccountResource> getAccount(
+            @PathVariable Long accountId
+    ) {
+        Account account = accountService.findAccount(accountId);
+        if(account != null)
+        {
+            AccountResource res = new AccountResourceAsm().toResource(account);
+            return new ResponseEntity<AccountResource>(res, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<AccountResource>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 }

@@ -5,6 +5,9 @@ import project.core.models.entities.Account;
 import project.rest.mvc.AccountController;
 import project.rest.resources.AccountResource;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 /**
  * Created by swen on 5/2/16.
  */
@@ -19,6 +22,7 @@ public class AccountResourceAsm extends ResourceAssemblerSupport<Account,Account
         AccountResource temp = new AccountResource();
         temp.setName(account.getName());
         temp.setPassword(account.getPassword());
+        temp.add(linkTo(methodOn(AccountController.class).getAccount(account.getId())).withSelfRel());
         return temp;
     }
 }

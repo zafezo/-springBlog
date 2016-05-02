@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findAccount(Long id) {
-        return null;
+        return accountRepo.findAccount(id);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findByAccountName(String name) {
-        return null;
+        return accountRepo.findAccountByName(name);
     }
 }

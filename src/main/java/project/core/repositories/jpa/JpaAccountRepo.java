@@ -26,7 +26,7 @@ public class JpaAccountRepo implements AccountRepo {
 
     @Override
     public Account findAccount(Long id) {
-        return null;
+        return em.find(Account.class,id);
     }
 
     @Override

@@ -11,6 +11,15 @@ import project.core.models.entities.Account;
 public class AccountResource extends ResourceSupport {
     private String name;
     private String password;
+    private Long rid;
+
+    public Long getRid() {
+        return rid;
+    }
+
+    public void setRid(Long rid) {
+        this.rid = rid;
+    }
 
     public Account toAccount(){
         Account temp = new Account();

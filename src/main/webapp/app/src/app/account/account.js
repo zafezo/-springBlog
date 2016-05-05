@@ -1,4 +1,6 @@
-angular.module('ngBoilerplate.account',['ui.router','ngResource'])
+angular.module('ngBoilerplate.account',[
+    'ui.router',
+    'ngResource'])
     .config(function config( $stateProvider ) {
         $stateProvider.state( 'login', {
             url: '/login',
@@ -20,6 +22,23 @@ angular.module('ngBoilerplate.account',['ui.router','ngResource'])
             },
             data:{
                 pageTitle:'Register'
+            }
+        });
+        $stateProvider.state('accountSearch',{
+            url:"/accounts/search",
+            views:{
+                'main':{
+                    templateUrl:'account/search.tpl.html',
+                    controller:'AccountSearchCtrl'
+                }
+            },
+            data:{
+                pageTitle:'Search Accounts'
+            },
+            resolve: {
+                accounts: function(accountService) {
+                    return accountService.getAllAccounts();
+                }
             }
         });
     })
@@ -53,6 +72,16 @@ angular.module('ngBoilerplate.account',['ui.router','ngResource'])
                 }
             });
         };
+        service.getAllAccounts = function () {
+            var Account = $resource("/SpringBlog/rest/accounts");
+            return Account.get().$promise.then(function (data) {
+                return data.accounts;
+            });
+        };
+        service.getAccountById = function (accountId) {
+            var Account = $resource("/SpringBlog/rest/accounts/:paramId");
+            return Account.get({paramId:accountId}).$promise;
+        };
         return service;
     })
     .controller('LoginCtrl',function ($scope,sessionService,$state,accountService) {
@@ -78,5 +107,8 @@ angular.module('ngBoilerplate.account',['ui.router','ngResource'])
               alert("Error registering user");
           });
       };
+    })
+    .controller('AccountSearchCtrl',function ($scope,accounts) {
+        $scope.accounts = accounts;
     })
 ;

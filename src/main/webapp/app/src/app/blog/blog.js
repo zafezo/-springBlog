@@ -9,7 +9,7 @@ angular.module('ngBoilerplate.blog', ['ui.router', 'ngResource', 'ngBoilerplate.
                 }
             },
             resolve:{
-                accounts: function (accountService,$stateParams) {
+                account: function (accountService,$stateParams) {
                     return accountService.getAccountById($stateParams.accountId);
                 },
                 blogs:function (blogService,$stateParams) {
@@ -18,6 +18,23 @@ angular.module('ngBoilerplate.blog', ['ui.router', 'ngResource', 'ngBoilerplate.
             },
             data:{
                 pageTitle:'Blogs'
+            }
+        });
+        $stateProvider.state('allBlogs',{
+           url:'/blogs',
+            views:{
+                'main':{
+                    templateUrl:'blog/all-blogs.tpl.html',
+                    controller:'ShowBlogs'
+                }
+            },
+            data:{
+                pageTitle:'Blogs'
+            },
+            resolve:{
+                blogs:function (blogService) {
+                    return blogService.getAllBlogs();
+                }
             }
         });
     })
@@ -35,9 +52,9 @@ angular.module('ngBoilerplate.blog', ['ui.router', 'ngResource', 'ngBoilerplate.
         };
         service.getBlogsByAccountId = function (accountId) {
             var deferred = $q.defer();
-            var Account = $resource("/SprinBlog/rest/accounts/:paramAccountId");
-            Account.get({paramAccountId:accountId},function (account) {
-                var Blog = account.resource('blogs');
+            var Account = $resource("/SpringBlog/rest/accounts/:paramAccountId");
+            Account.get({paramAccountId:accountId},function (returnedData) {
+                var Blog = returnedData.resource("blogs");
                 Blog.get(null,
                 function (data) {
                     deferred.resolve(data.blogs);
@@ -58,5 +75,8 @@ angular.module('ngBoilerplate.blog', ['ui.router', 'ngResource', 'ngBoilerplate.
                     $state.go('manageBlogs',{accountId:account.rid},{reload:true});
                 });
         };
+    })
+    .controller('ShowBlogs',function ($scope,blogs) {
+        $scope.blogs = blogs;
     })
 ;

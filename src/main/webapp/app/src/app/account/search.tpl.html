@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="form-group">
+        <input type="text" ng-model="q" placeholder="Account Name" class="form-control"/>
+    </div>
+
+    <table class="table table-striped">
+        <th>Account Name</th>
+        <th>Actions</th>
+        <tr ng-repeat="account in accounts | filter:q ">
+            <td>{{account.name}}</td>
+            <td>
+                <a ui-sref="manageBlogs({accountId:account.rid})" class="btn btn-default">
+                    Manage
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>

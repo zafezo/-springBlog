@@ -1,0 +1,13 @@
+<div class="row">
+    <h1>All Blogs in our service</h1>
+    <table class="table table-hover">
+        <th>Name</th>
+        <th>Action</th>
+        <tr ng-repeat="blog in blogs">
+            <td>{{blog.title}}</td>
+            <td>
+                <a ui-sref="" class="btn btn-default">Show Entries</a>
+            </td>
+        </tr>
+    </table>
+</div>

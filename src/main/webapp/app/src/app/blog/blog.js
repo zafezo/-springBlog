@@ -62,6 +62,10 @@ angular.module('ngBoilerplate.blog', ['ui.router', 'ngResource', 'ngBoilerplate.
                         deferred.reject();
                     });
             });
+            service.getBlogById = function (blogId) {
+                var Blog = $resource('/SpringBlog/rest/blogs/:blogId');
+                return Blog.get({blogId:blogId}).$promise;
+            };
             return deferred.promise;
         };
         return service;

@@ -5,6 +5,7 @@ angular.module( 'ngBoilerplate', [
   'ngBoilerplate.about',
   'ngBoilerplate.account',
   'ngBoilerplate.blog',
+  'ngBoilerplate.entry',
   'ui.router',
   'hateoas'
 ])

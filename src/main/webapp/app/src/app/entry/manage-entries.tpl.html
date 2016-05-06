@@ -1,0 +1,28 @@
+<div class="row">
+    <h1>Manage {{title}} Blog</h1>
+    <div class="row">
+        <div class="component-group">
+            <div class="input-group">
+                <label>Title:</label>
+                <input type="text" class="form-control" ng-model="blogEntry.title"/>
+            </div>
+            <div class="input-group">
+                <label>Content:</label>
+                 <input type="text" class="form-control" ng-model="blogEntry.content"/>
+            </div>
+            <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="createBlogEntry()">Create New Blog Entry!</button>
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-condensed">
+            <th>Title</th>
+            <th>Content</th>
+            <tr ng-repeat="blogEntry in entries">
+                <td>{{blogEntry.title}}</td>
+                <td>{{blogEntry.content}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
